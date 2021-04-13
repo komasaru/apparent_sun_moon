@@ -10,20 +10,17 @@ static constexpr double kTurnas = 1296000.0;      // Arcseconds in a full circle
 static constexpr double kU2R    = kAs2R / 1.0e7;  // Units of 0.1 microarcsecond to radians
 
 /*
- * @brief       コンストラクタ
+ * @brief      コンストラクタ
  *
- * @param[in]   Julian Century Number(double)
- * @param[ref]  lunisolar parameter 一覧 (vector<vector<double>>)
- * @param[ref]  planetary parameter 一覧 (vector<vector<double>>)
+ * @param[in]  Julian Century Number(double)
  */
-Nutation::Nutation(
-    double t,
-    std::vector<std::vector<double>>& dat_ls,
-    std::vector<std::vector<double>>& dat_pl) {
+Nutation::Nutation(double t) {
   try {
+    // lunisolra, planetary パラメータ一覧取得
+    File o_f;
+    if (!o_f.get_param_ls(dat_ls)) throw;
+    if (!o_f.get_param_pl(dat_pl)) throw;
     this->t = t;
-    this->dat_ls = dat_ls;
-    this->dat_pl = dat_pl;
   } catch (...) {
     throw;
   }

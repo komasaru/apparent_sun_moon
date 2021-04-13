@@ -8,29 +8,16 @@ static constexpr unsigned int kDaySec = 86400;          // 1日の秒数(s)
 static constexpr double           kPi = atan(1.0) * 4;  // 円周率
 
 /*
- * @brief       コンストラクタ
+ * @brief      コンストラクタ
  *
- * @param[in]   UTC (timespec)
- * @param[ref]  うるう秒一覧 (vector<vector<string>>)
- * @param[ref]  DUT1 一覧 (vector<vector<string>>)
- * @param[ref]  lunisolar parameter 一覧 (vector<vector<double>>)
- * @param[ref]  planetary parameter 一覧 (vector<vector<double>>)
+ * @param[in]  UTC (timespec)
  */
-Apos::Apos(
-    struct timespec ts,
-    std::vector<std::vector<std::string>>& l_ls,
-    std::vector<std::vector<std::string>>& l_dut,
-    std::vector<std::vector<double>>& dat_ls,
-    std::vector<std::vector<double>>& dat_pl) {
+Apos::Apos(struct timespec ts) {
   try {
-    this->utc    = ts;
-    this->l_ls   = l_ls;
-    this->l_dut  = l_dut;
-    this->dat_ls = dat_ls;
-    this->dat_pl = dat_pl;
-    Time t_utc(utc, l_ls, l_dut);
+    this->utc = ts;
+    Time t_utc(utc);
     this->tdb = t_utc.calc_tdb();
-    Time t_tdb(tdb, l_ls, l_dut);
+    Time t_tdb(tdb);
     this->jd  = t_tdb.calc_jd();
     this->jcn = t_tdb.calc_t();
     calc_val_t2();  // 時刻 t2(TDB) における各種値の計算
@@ -67,7 +54,7 @@ Position Apos::sun() {
     v_dd = conv_lorentz(v_21);
     pos_sun = calc_pos(v_dd, d_e_s);
     // === 瞬時の真座標系: GCRS への バイアス・歳差・章動の適用
-    Bpn o_bpn(jcn, dat_ls, dat_pl);
+    Bpn o_bpn(jcn);
     pos_sun_bpn = o_bpn.apply_bias_prec_nut(pos_sun);
     // === 黄道傾斜角
     Obliquity o_ob;
@@ -121,7 +108,7 @@ Position Apos::moon() {
     v_dd = conv_lorentz(v_21);
     pos_moon = calc_pos(v_dd, d_e_m);
     // === 瞬時の真座標系: GCRS への バイアス・歳差・章動の適用
-    Bpn o_bpn(jcn, dat_ls, dat_pl);
+    Bpn o_bpn(jcn);
     pos_moon_bpn = o_bpn.apply_bias_prec_nut(pos_moon);
     // === 黄道傾斜角
     Obliquity o_ob;

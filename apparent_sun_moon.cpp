@@ -16,8 +16,6 @@
                  無指定なら現在(システム日時)と判断。
 ***********************************************************/
 #include "apos.hpp"
-#include "common.hpp"
-#include "file.hpp"
 #include "position.hpp"
 
 #include <cstdlib>   // for EXIT_XXXX
@@ -38,10 +36,6 @@ int main(int argc, char* argv[]) {
   struct tm t = {};     // for work
   ns::Position pos_s;   // 視位置（太陽）
   ns::Position pos_m;   // 視位置（月）
-  std::vector<std::vector<std::string>> l_ls;    // List of Leap Second
-  std::vector<std::vector<std::string>> l_dut;   // List of DUT1
-  std::vector<std::vector<double>>      dat_ls;  // data of lunisolar parameters
-  std::vector<std::vector<double>>      dat_pl;  // data of planetary parameters
 
   try {
     // 日付取得
@@ -71,19 +65,11 @@ int main(int argc, char* argv[]) {
       }
     }
 
-    // うるう秒, DUT1 一覧、
-    // lunisolra, planetary パラメータ一覧取得
-    ns::File o_f;
-    if (!o_f.get_leap_sec_list(l_ls)) throw;
-    if (!o_f.get_dut1_list(l_dut))    throw;
-    if (!o_f.get_param_ls(dat_ls))    throw;
-    if (!o_f.get_param_pl(dat_pl))    throw;
-
     // JST -> UTC
     utc = ns::jst2utc(jst);
 
     // 視位置計算
-    ns::Apos o_a(utc, l_ls, l_dut, dat_ls, dat_pl);
+    ns::Apos o_a(utc);
     pos_s = o_a.sun();
     pos_m = o_a.moon();
 

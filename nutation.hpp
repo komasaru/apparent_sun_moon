@@ -1,6 +1,8 @@
 #ifndef APPARENT_SUN_MOON_NUTATION_HPP_
 #define APPARENT_SUN_MOON_NUTATION_HPP_
 
+#include "file.hpp"
+
 #include <cmath>
 #include <iostream>
 #include <vector>
@@ -13,10 +15,7 @@ class Nutation {
   double t;                                 // Julian Century Number for TT
 
 public:
-  Nutation(
-      double t,
-      std::vector<std::vector<double>>&,
-      std::vector<std::vector<double>>&);   // コンストラクタ
+  Nutation(double t);                       // コンストラクタ
   bool calc_nutation(double&, double&);     // 計算: nutation
 
 private:

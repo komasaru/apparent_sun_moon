@@ -40,12 +40,7 @@ public:
   struct timespec tdb;     // timespec of TDB (of t2)
   double          jd;      // Julian Day for TDB (of t2)
 
-  Apos(
-      struct timespec,
-      std::vector<std::vector<std::string>>&,
-      std::vector<std::vector<std::string>>&,
-      std::vector<std::vector<double>>&,
-      std::vector<std::vector<double>>&);   // コンストラクタ
+  Apos(struct timespec);   // コンストラクタ
   Position sun();          // 視位置計算: 太陽
   Position moon();         // 視位置計算: 月
 

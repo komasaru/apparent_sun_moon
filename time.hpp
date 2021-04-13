@@ -2,6 +2,7 @@
 #define APPARENT_SUN_MOON_TIME_HPP_
 
 #include "delta_t.hpp"
+#include "file.hpp"
 
 #include <cmath>
 #include <ctime>
@@ -12,6 +13,9 @@
 #include <vector>
 
 namespace apparent_sun_moon {
+
+struct timespec jst2utc(struct timespec);   // 変換: JST -> UTC
+std::string gen_time_str(struct timespec);  // 日時文字列生成
 
 class Time {
   std::vector<std::vector<std::string>> l_ls;   // List of Leap Second
@@ -30,10 +34,7 @@ class Time {
   int    utc_tai;          // UTC - TAI (協定世界時と国際原子時の差 = うるう秒の総和)
 
 public:
-  Time(
-      struct timespec,
-      std::vector<std::vector<std::string>>&,
-      std::vector<std::vector<std::string>>&);  // コンストラクタ
+  Time(struct timespec);       // コンストラクタ
   struct timespec calc_jst();  // 計算: JST  (日本標準時)
   double calc_jd();            // 計算: JD   (ユリウス日)
   double calc_t();             // 計算: T    (ユリウス世紀数)

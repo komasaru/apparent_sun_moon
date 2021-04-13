@@ -25,9 +25,7 @@ class Bpn {
   double r_nut[3][3];            // 回転行列（章動）
 
 public:
-  Bpn(double,
-      std::vector<std::vector<double>>&,
-      std::vector<std::vector<double>>&);     // コンストラクタ
+  Bpn(double);                                // コンストラクタ
   bool gen_r_bias(double(&)[3][3]);           // 変換行列生成: Bias
   bool gen_r_bias_prec(double(&)[3][3]);      // 変換行列生成: バイアス＆歳差
   bool gen_r_bias_prec_nut(double(&)[3][3]);  // 変換行列生成: バイアス＆歳差＆章動

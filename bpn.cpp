@@ -9,20 +9,14 @@ static constexpr double kAs2R  = kPi / (3600.0 * 180.0);  // arcseconds -> radia
 static constexpr double kMas2R = kAs2R / 1000.0;          // millarcsecond -> radian
 
 /*
- * @brief       コンストラクタ
+ * @brief      コンストラクタ
  *
- * @param[in]   JCN(double)
- * @param[ref]  lunisolar parameter 一覧 (vector<vector<double>>)
- * @param[ref]  planetary parameter 一覧 (vector<vector<double>>)
+ * @param[in]  JCN (double)
  */
-Bpn::Bpn(
-    double jcn,
-    std::vector<std::vector<double>>& dat_ls,
-    std::vector<std::vector<double>>& dat_pl) {
+Bpn::Bpn(double jcn) {
   try {
+    // JCN
     this->jcn = jcn;
-    this->dat_ls = dat_ls;
-    this->dat_pl = dat_pl;
     // 黄道傾斜角計算
     Obliquity o_ob;
     eps = o_ob.calc_ob(jcn);
@@ -129,7 +123,7 @@ bool Bpn::gen_r_bias_prec_nut(double(&r)[3][3]) {
 
   try {
     // Nutation(delta-psi, delta-eps) 計算
-    Nutation o_n(jcn, dat_ls, dat_pl);
+    Nutation o_n(jcn);
     if (!o_n.calc_nutation(dpsi, deps)) {
       std::cout << "[ERROR] Could not calculate delta-psi, "
                 << "delta-epsilon!" << std::endl;
@@ -222,7 +216,7 @@ bool Bpn::gen_r_prec_nut(double(&r)[3][3]) {
 
   try {
     // Nutation(delta-psi, delta-eps) 計算
-    Nutation o_n(jcn, dat_ls, dat_pl);
+    Nutation o_n(jcn);
     if (!o_n.calc_nutation(dpsi, deps)) {
       std::cout << "[ERROR] Could not calculate delta-psi, "
                 << "delta-epsilon!" << std::endl;
@@ -263,7 +257,7 @@ bool Bpn::gen_r_nut(double(&r)[3][3]) {
 
   try {
     // Nutation(delta-psi, delta-eps) 計算
-    Nutation o_n(jcn, dat_ls, dat_pl);
+    Nutation o_n(jcn);
     if (!o_n.calc_nutation(dpsi, deps)) {
       std::cout << "[ERROR] Could not calculate delta-psi, "
                 << "delta-epsilon!" << std::endl;
