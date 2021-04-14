@@ -9,6 +9,10 @@ static constexpr double kAs2R   = 4.848136811095359935899141e-6;  // Arcseconds 
 static constexpr double kTurnas = 1296000.0;      // Arcseconds in a full circle
 static constexpr double kU2R    = kAs2R / 1.0e7;  // Units of 0.1 microarcsecond to radians
 
+// static メンバ変数の初期化
+std::vector<std::vector<double>> Nutation::dat_ls;  // data of lunisolar parameters
+std::vector<std::vector<double>> Nutation::dat_pl;  // data of planetary parameters
+
 /*
  * @brief      コンストラクタ
  *
@@ -17,9 +21,13 @@ static constexpr double kU2R    = kAs2R / 1.0e7;  // Units of 0.1 microarcsecond
 Nutation::Nutation(double t) {
   try {
     // lunisolra, planetary パラメータ一覧取得
-    File o_f;
-    if (!o_f.get_param_ls(dat_ls)) throw;
-    if (!o_f.get_param_pl(dat_pl)) throw;
+    if (dat_ls.size() == 0 || dat_pl.size() == 0) {
+      dat_ls.reserve(50);   // 予めメモリ確保
+      dat_pl.reserve(250);  // 予めメモリ確保
+      File o_f;
+      if (!o_f.get_param_ls(dat_ls)) throw;
+      if (!o_f.get_param_pl(dat_pl)) throw;
+    }
     this->t = t;
   } catch (...) {
     throw;

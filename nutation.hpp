@@ -10,8 +10,8 @@
 namespace apparent_sun_moon {
 
 class Nutation {
-  std::vector<std::vector<double>> dat_ls;  // data of lunisolar parameters
-  std::vector<std::vector<double>> dat_pl;  // data of planetary parameters
+  static std::vector<std::vector<double>> dat_ls;  // data of lunisolar parameters
+  static std::vector<std::vector<double>> dat_pl;  // data of planetary parameters
   double t;                                 // Julian Century Number for TT
 
 public:

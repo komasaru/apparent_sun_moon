@@ -60,6 +60,10 @@ std::string gen_time_str(struct timespec ts) {
   }
 }
 
+// static メンバ変数の初期化
+std::vector<std::vector<std::string>> Time::l_ls  = {};  // List of Leap Second
+std::vector<std::vector<std::string>> Time::l_dut = {};  // List of DUT1
+
 /*
  * @brief      コンストラクタ
  *
@@ -68,9 +72,13 @@ std::string gen_time_str(struct timespec ts) {
 Time::Time(struct timespec ts) {
   try {
     // うるう秒, DUT1 一覧、
-    File o_f;
-    if (!o_f.get_leap_sec_list(l_ls)) throw;
-    if (!o_f.get_dut1_list(l_dut))    throw;
+    if (l_ls.size() == 0 || l_dut.size() == 0) {
+      l_ls.reserve(50);    // 予めメモリ確保
+      l_dut.reserve(250);  // 予めメモリ確保
+      File o_f;
+      if (!o_f.get_leap_sec_list(l_ls)) throw;
+      if (!o_f.get_dut1_list(l_dut))    throw;
+    }
     // その他の初期設定
     this->ts      = ts;
     this->ts_tai  = {};
